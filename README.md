@@ -28,6 +28,13 @@ Software (Unidad 3, Despliegue continuo).
 ## Aplicación publicada
 https://deborabermeo.github.io/Registro-de-incidencias/
 
+## Despliegue automático
+El flujo `.github/workflows/deploy.yml` valida que los archivos y elementos
+principales de la aplicación existan y comprueba la sintaxis de JavaScript.
+Al actualizar `main`, publica el sitio en GitHub Pages únicamente si la
+validación finaliza correctamente. Para habilitarlo, configurar **Settings >
+Pages > Build and deployment > Source** como **GitHub Actions**.
+
 ## Flujo de trabajo (ramas)
 - `main`: versión estable, se despliega automáticamente.
 - `feature/*`: nuevas funcionalidades.
