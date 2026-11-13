@@ -1,14 +1,127 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sistema de Registro de Incidencias</title>
-  <link rel="stylesheet" href="css/style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Registro de Incidencias</title>
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-  <h1>Sistema de Registro de Incidencias</h1>
-  <p>Proyecto en construcción.</p>
-  <script src="js/app.js"></script>
+
+    <header class="encabezado">
+        <h1>Sistema de Registro de Incidencias</h1>
+        <p>Gestión y seguimiento de incidencias reportadas</p>
+        <span class="version">Versión 1.0.0</span>
+    </header>
+
+    <main class="contenedor">
+
+        <section class="tarjeta">
+
+            <h2>Registrar nueva incidencia</h2>
+            <p>Complete los datos del problema reportado.</p>
+
+            <form id="formIncidencia">
+
+                <div class="campo">
+                    <label for="titulo">Título de la incidencia</label>
+                    <input type="text" id="titulo"
+                        placeholder="Ejemplo: Error de inicio de sesión"
+                        required>
+                </div>
+
+                <div class="campo">
+                    <label for="descripcion">Descripción</label>
+                    <textarea id="descripcion" rows="4"
+                        placeholder="Describa el problema encontrado"
+                        required></textarea>
+                </div>
+
+                <div class="fila">
+
+                    <div class="campo">
+                        <label for="categoria">Categoría</label>
+                        <select id="categoria" required>
+                            <option value="">Seleccione una categoría</option>
+                            <option value="Software">Software</option>
+                            <option value="Hardware">Hardware</option>
+                            <option value="Red">Red</option>
+                            <option value="Seguridad">Seguridad</option>
+                            <option value="Otros">Otros</option>
+                        </select>
+                    </div>
+
+                    <div class="campo">
+                        <label for="prioridad">Prioridad</label>
+                        <select id="prioridad" required>
+                            <option value="">Seleccione la prioridad</option>
+                            <option value="Baja">Baja</option>
+                            <option value="Media">Media</option>
+                            <option value="Alta">Alta</option>
+                        </select>
+                    </div>
+
+                    <div class="campo">
+                        <label for="estado">Estado</label>
+                        <select id="estado" required>
+                            <option value="Pendiente">Pendiente</option>
+                            <option value="En proceso">En proceso</option>
+                            <option value="Resuelta">Resuelta</option>
+                        </select>
+                    </div>
+
+                </div>
+
+                <button type="submit">Registrar incidencia</button>
+
+                <p id="mensaje" role="status"></p>
+
+            </form>
+
+        </section>
+
+        <section class="tarjeta">
+
+            <h2>Incidencias registradas</h2>
+            <p>Listado de incidencias almacenadas en el sistema.</p>
+
+            <div class="tabla-contenedor">
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Título</th>
+                            <th>Descripción</th>
+                            <th>Categoría</th>
+                            <th>Prioridad</th>
+                            <th>Estado</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="listaIncidencias">
+                        <tr>
+                            <td colspan="6" class="sin-registros">
+                                No hay incidencias registradas.
+                            </td>
+                        </tr>
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+    </main>
+
+    <footer>
+        <p>Sistema de Registro de Incidencias</p>
+        <p>Gestión de la Configuración del Software</p>
+    </footer>
+
+    <script src="js/app.js"></script>
+
 </body>
 </html>
