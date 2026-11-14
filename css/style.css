@@ -123,12 +123,14 @@ button:hover {
 
 .tabla-contenedor {
     overflow-x: auto;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
 }
 
 table {
     width: 100%;
+    min-width: 700px;
     border-collapse: collapse;
-    margin-top: 20px;
 }
 
 th {
@@ -137,6 +139,7 @@ th {
     padding: 14px;
     text-align: left;
     font-size: 14px;
+    white-space: nowrap;
 }
 
 td {
@@ -146,8 +149,28 @@ td {
     overflow-wrap: anywhere;
 }
 
-tr:hover td {
+tbody tr:nth-child(even) {
     background-color: #f8fafc;
+}
+
+tr:hover td {
+    background-color: #eff6ff;
+}
+
+.controles-filtro {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 18px;
+    margin-bottom: 20px;
+}
+
+.controles-filtro .campo {
+    margin-bottom: 0;
+}
+
+.controles-filtro input,
+.controles-filtro select {
+    background-color: white;
 }
 
 .sin-registros {
@@ -206,6 +229,11 @@ footer p {
 
     .tarjeta {
         padding: 18px;
+    }
+
+    .controles-filtro {
+        grid-template-columns: 1fr;
+        gap: 12px;
     }
 
     .encabezado h1 {
