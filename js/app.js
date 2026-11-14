@@ -6,9 +6,49 @@ const mensaje = document.getElementById("mensaje");
 const buscarTitulo = document.getElementById("buscarTitulo");
 const filtroEstado = document.getElementById("filtroEstado");
 
-function obtenerIncidencias() {
+function leerIncidencias() {
     const registros = localStorage.getItem("incidencias");
-    return registros ? JSON.parse(registros) : [];
+    if (registros === null) {
+        return { incidencias: [], error: null };
+    }
+
+    try {
+        const incidencias = JSON.parse(registros);
+        if (!Array.isArray(incidencias)) {
+            return {
+                incidencias: null,
+                error: new TypeError("El contenido guardado no es una lista.")
+            };
+        }
+
+        return { incidencias: incidencias, error: null };
+    } catch (error) {
+        if (!(error instanceof SyntaxError)) {
+            throw error;
+        }
+
+        return { incidencias: null, error: error };
+    }
+}
+
+function mostrarErrorAlmacenamiento(error) {
+    console.error(
+        "No se pudieron leer las incidencias del almacenamiento local.",
+        error
+    );
+
+    const fila = document.createElement("tr");
+    const celda = crearCelda(
+        "No se pudieron cargar las incidencias. Revise los datos guardados en este navegador."
+    );
+    celda.colSpan = 6;
+    celda.className = "sin-registros";
+    fila.appendChild(celda);
+    listaIncidencias.replaceChildren(fila);
+
+    mensaje.textContent =
+        "Error al leer las incidencias guardadas. Los datos no fueron modificados.";
+    mensaje.style.color = "#dc2626";
 }
 
 // Registrar una nueva incidencia
@@ -29,7 +69,12 @@ formulario.addEventListener("submit", function (event) {
         return;
     }
 
-    const incidencias = obtenerIncidencias();
+    const resultado = leerIncidencias();
+    if (resultado.error) {
+        mostrarErrorAlmacenamiento(resultado.error);
+        return;
+    }
+    const incidencias = resultado.incidencias;
 
     // Crear una nueva incidencia
     const nuevaIncidencia = {
@@ -79,7 +124,12 @@ function normalizar(valor) {
 // Función para mostrar las incidencias
 function mostrarIncidencias() {
 
-    const incidencias = obtenerIncidencias();
+    const resultado = leerIncidencias();
+    if (resultado.error) {
+        mostrarErrorAlmacenamiento(resultado.error);
+        return;
+    }
+    const incidencias = resultado.incidencias;
     const tituloBuscado = normalizar(buscarTitulo.value);
     const estadoBuscado = normalizar(filtroEstado.value);
     const incidenciasFiltradas = incidencias.filter(function (incidencia) {

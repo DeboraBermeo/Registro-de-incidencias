@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - main
+  pull_request:
+    branches:
+      - main
   workflow_dispatch:
 
 permissions:
@@ -36,6 +39,9 @@ jobs:
 
       - name: Check JavaScript syntax
         run: node --check js/app.js
+
+      - name: Run application tests
+        run: node --test
 
   deploy:
     needs: validate
