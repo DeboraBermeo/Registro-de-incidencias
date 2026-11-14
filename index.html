@@ -12,7 +12,7 @@
     <header class="encabezado">
         <h1>Sistema de Registro de Incidencias</h1>
         <p>Gestión y seguimiento de incidencias reportadas</p>
-        <span class="version">Versión 1.0.0</span>
+        <span class="version">Versión 1.1.0</span>
     </header>
 
     <main class="contenedor">
@@ -85,6 +85,27 @@
 
             <h2>Incidencias registradas</h2>
             <p>Listado de incidencias almacenadas en el sistema.</p>
+
+            <div class="controles-filtro">
+                <div class="campo">
+                    <label for="buscarTitulo">Buscar por título</label>
+                    <input
+                        type="search"
+                        id="buscarTitulo"
+                        placeholder="Escribe el título de una incidencia"
+                    >
+                </div>
+
+                <div class="campo">
+                    <label for="filtroEstado">Filtrar por estado</label>
+                    <select id="filtroEstado">
+                        <option value="">Todos los estados</option>
+                        <option value="Pendiente">Pendiente</option>
+                        <option value="En proceso">En proceso</option>
+                        <option value="Resuelta">Resuelta</option>
+                    </select>
+                </div>
+            </div>
 
             <div class="tabla-contenedor">
 

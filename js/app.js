@@ -3,11 +3,13 @@
 const formulario = document.getElementById("formIncidencia");
 const listaIncidencias = document.getElementById("listaIncidencias");
 const mensaje = document.getElementById("mensaje");
+const buscarTitulo = document.getElementById("buscarTitulo");
+const filtroEstado = document.getElementById("filtroEstado");
 
-// Recuperar las incidencias almacenadas
-let incidencias = JSON.parse(
-    localStorage.getItem("incidencias")
-) || [];
+function obtenerIncidencias() {
+    const registros = localStorage.getItem("incidencias");
+    return registros ? JSON.parse(registros) : [];
+}
 
 // Registrar una nueva incidencia
 formulario.addEventListener("submit", function (event) {
@@ -26,6 +28,8 @@ formulario.addEventListener("submit", function (event) {
         mensaje.style.color = "#dc2626";
         return;
     }
+
+    const incidencias = obtenerIncidencias();
 
     // Crear una nueva incidencia
     const nuevaIncidencia = {
@@ -46,11 +50,13 @@ formulario.addEventListener("submit", function (event) {
         JSON.stringify(incidencias)
     );
 
-    // Actualizar la tabla
-    mostrarIncidencias();
-
     // Limpiar los campos del formulario
     formulario.reset();
+    buscarTitulo.value = "";
+    filtroEstado.value = "";
+
+    // Actualizar la tabla
+    mostrarIncidencias();
 
     // Mostrar mensaje de confirmación
     mensaje.textContent = "Incidencia registrada correctamente.";
@@ -64,17 +70,33 @@ function crearCelda(texto) {
     return celda;
 }
 
+function normalizar(valor) {
+    return String(valor == null ? "" : valor)
+        .trim()
+        .toLocaleLowerCase("es");
+}
+
 // Función para mostrar las incidencias
 function mostrarIncidencias() {
 
+    const incidencias = obtenerIncidencias();
+    const tituloBuscado = normalizar(buscarTitulo.value);
+    const estadoBuscado = normalizar(filtroEstado.value);
+    const incidenciasFiltradas = incidencias.filter(function (incidencia) {
+        return normalizar(incidencia.titulo).includes(tituloBuscado) &&
+            (!estadoBuscado || normalizar(incidencia.estado) === estadoBuscado);
+    });
+
     listaIncidencias.replaceChildren();
 
-    // Comprobar si existen registros
-    if (incidencias.length === 0) {
+    // Comprobar si existen resultados para los filtros actuales
+    if (incidenciasFiltradas.length === 0) {
 
         const fila = document.createElement("tr");
         const celda = crearCelda(
-            "No hay incidencias registradas."
+            incidencias.length === 0
+                ? "No hay incidencias registradas."
+                : "No se encontraron incidencias con esos filtros."
         );
 
         celda.colSpan = 6;
@@ -86,8 +108,8 @@ function mostrarIncidencias() {
         return;
     }
 
-    // Recorrer las incidencias almacenadas
-    incidencias.forEach(function (incidencia) {
+    // Recorrer las incidencias que coinciden con los filtros
+    incidenciasFiltradas.forEach(function (incidencia) {
 
         const fila = document.createElement("tr");
 
@@ -125,6 +147,10 @@ function mostrarIncidencias() {
 
     });
 }
+
+buscarTitulo.addEventListener("input", mostrarIncidencias);
+filtroEstado.addEventListener("change", mostrarIncidencias);
+window.addEventListener("storage", mostrarIncidencias);
 
 // Mostrar los registros al cargar la página
 mostrarIncidencias();
